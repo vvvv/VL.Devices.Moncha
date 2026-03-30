@@ -1,19 +1,15 @@
-# VL.NewLibrary.Template
+# VL.Devices.Moncha
 
-- [ ] A clear and concise description of what this package is and does, also what problem it solves.
-- [ ] In case this is a wrapper, links to original code and which version of it is used
-- [ ] In case this is for a device/protocol, links to the device/protocol-specs
-- [ ] Required dependencies/drivers to download and install in the getting started section below
-- [ ] If available, links to documentation (other than helppatches), tutorial videos, blog posts, ...
-- [ ] Note that you can also [include images](https://devblogs.microsoft.com/nuget/add-a-readme-to-your-nuget-package/#markdown-and-image-support)!
-- [ ] Mention any limitations
+Support for the Moncha laser DAC.
+
+Requires MSVC++ 2010 and 2012!
 
 For use with vvvv, the visual live-programming environment for .NET: http://vvvv.org
 
 ## Getting started
 - Install as [described here](https://thegraybook.vvvv.org/reference/hde/managing-nugets.html) via commandline:
 
-    `nuget install VL.NewLibrary.Template -pre`
+    `nuget install VL.Devices.Moncha -pre`
 
 - Usage examples and more information are included in the pack and can be found via the [Help Browser](https://thegraybook.vvvv.org/reference/hde/findinghelp.html)
 
@@ -23,8 +19,8 @@ For use with vvvv, the visual live-programming environment for .NET: http://vvvv
 - When making a pull-request, please make sure to read the general [guidelines on contributing to vvvv libraries](https://thegraybook.vvvv.org/reference/extending/contributing.html)
 
 ## Credits
-Links to libraries this is based on
+Based on original source code by Colorsound: [Vimeo](https://vimeo.com/colorsound) [Instagram](https://www.instagram.com/reel/C8K8tPrAfBU/?igsh=NjJqam4xbDF4MjIw)
 
 ## Sponsoring
 Development of this library was partially sponsored by:  
-* 
+* [ggml.io](http://ggml.io/)
