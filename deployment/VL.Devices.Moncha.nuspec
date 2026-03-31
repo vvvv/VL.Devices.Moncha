@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>VL.Devices.Moncha</id>
-    <version>0.0.3-alpha</version>
+    <version>0.0.4-alpha</version>
     <title>VL.Devices.Moncha</title>
     <authors>vvvv, colorsound</authors>
     <projectUrl>https://github.com/vvvv/VL.Devices.Moncha</projectUrl>
@@ -20,6 +20,7 @@
   </metadata>
   <files>
     <file src="..\lib\**\MonchaMiddleware32.exe" target="lib\" exclude="" />
+	<file src="..\lib\**\MonchaMiddleware32.dll" target="lib\" exclude="" />
     <file src="..\lib\**\FNet.dll" target="lib\" exclude="" />
 	<file src="..\lib\**\FTD2XX.dll" target="lib\" exclude="" />
 	<file src="..\lib\**\ServiceWire.dll" target="lib\" exclude="" />
