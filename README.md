@@ -5,6 +5,7 @@ Support for the Moncha laser DAC.
 For use with vvvv, the visual live-programming environment for .NET: http://vvvv.org
 
 ## Getting started
+- Install [.NET8 runtime for x86 architecture](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-8.0.26-windows-x86-installer?cid=getdotnetcore)
 - Install [MSVC++ Redistributable 2010 and 2012](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)!
 
 - Install as [described here](https://thegraybook.vvvv.org/reference/hde/managing-nugets.html) via commandline:
