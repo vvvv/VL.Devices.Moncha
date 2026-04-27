@@ -425,18 +425,18 @@ namespace MonchaCommonBase {
     [Serializable]
     public class LaserPoint {
 
-        private double x;
-        private double y;
+        private float x;
+        private float y;
         private byte[] colors;
 
         public LaserPoint() { }
 
-        public double X {
+        public float X {
             set { x=value; }
             get { return x; }
         }
 
-        public double Y {
+        public float Y {
             set { y=value; }
             get { return y; }
         }
