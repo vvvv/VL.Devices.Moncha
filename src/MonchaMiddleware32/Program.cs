@@ -232,8 +232,8 @@ namespace MonchaController32 {
                     if(code1==0) {
                         if(canSend) {
                             HwLaserPoint[] hwPoints = new HwLaserPoint[1];
-                            hwPoints[0].x = (UInt16)parcel.X;
-                            hwPoints[0].y = (UInt16)parcel.Y;
+                            hwPoints[0].x = parcel.X;
+                            hwPoints[0].y = parcel.Y;
                             hwPoints[0].colors = new byte[] { 0, 0, 0, 0, 0, 0 };
                             // send laser points to device
                             int code2 = SendFrame(index, hwPoints, (UInt32)hwPoints.Length, (UInt32)parcel.DeviceScanrate);
@@ -275,15 +275,13 @@ namespace MonchaController32 {
                             // transform from network point to device point
                             for(int p=0; p<parcel.LaserPoints.Count; p++) {
 
-                                double x = 32767.5*Toolkit.clamp(netPoints[p].X, -1.0, 1.0)+32767.5; Toolkit.clamp(ref x, 0.0, 65535.0);
-                                double y = 32767.5*Toolkit.clamp(netPoints[p].Y, -1.0, 1.0)+32767.5; Toolkit.clamp(ref y, 0.0, 65535.0);
                                 byte r = netPoints[p].Colors[0];
                                 byte g = netPoints[p].Colors[1];
                                 byte b = netPoints[p].Colors[2];
                                 byte a = netPoints[p].Colors[3];
 
-                                hwPoints[p].x = (UInt16)x;
-                                hwPoints[p].y = (UInt16)y;
+                                hwPoints[p].x = netPoints[p].X;
+                                hwPoints[p].y = netPoints[p].Y;
                                 hwPoints[p].colors = [r, g, b, a, 0, 0];
 
                             }
@@ -336,6 +334,7 @@ namespace MonchaController32 {
                 controller.MaxScanrate = pDevInfo.maxScanrate;
                 controller.MaxNumOfPoints = pDevInfo.maxNumOfPoints;
                 controller.DeviceType = pDevInfo.type;
+                controller.Serial = pDevInfo.serial;
             } else {
                 if(server!=null) {
                     server.sendMessage("WARNING: Could not query device info for laser device with index: "+controller.Index+" ["+getErrorCode(code)+"]");

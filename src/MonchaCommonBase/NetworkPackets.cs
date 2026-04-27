@@ -143,8 +143,8 @@ namespace MonchaCommonBase {
 
         #region Fields
         private string deviceAddress;
-        private double x;
-        private double y;
+        private UInt16 x;
+        private UInt16 y;
         private UInt32 deviceScanrate;
         #endregion
 
@@ -158,12 +158,12 @@ namespace MonchaCommonBase {
             get { return deviceAddress; }
         }
 
-        public double X {
+        public UInt16 X {
             set { x=value; }
             get { return x; }
         }
 
-        public double Y {
+        public UInt16 Y {
             set { y=value; }
             get { return y; }
         }
@@ -222,6 +222,7 @@ namespace MonchaCommonBase {
         private UInt32 minScanrate;
         private UInt32 maxNumOfPoints;
         private string deviceType = "";
+        private string serial = "";
 
         private bool failed = false;
         private bool invalid = false;
@@ -263,6 +264,11 @@ namespace MonchaCommonBase {
         public string DeviceType {
             set { deviceType=value; }
             get { return deviceType; }
+        }
+        public string Serial
+        {
+            set { serial = value; }
+            get { return serial; }
         }
 
         public bool Failed {
@@ -425,18 +431,18 @@ namespace MonchaCommonBase {
     [Serializable]
     public class LaserPoint {
 
-        private float x;
-        private float y;
+        private UInt16 x;
+        private UInt16 y;
         private byte[] colors;
 
         public LaserPoint() { }
 
-        public float X {
+        public UInt16 X {
             set { x=value; }
             get { return x; }
         }
 
-        public float Y {
+        public UInt16 Y {
             set { y=value; }
             get { return y; }
         }
