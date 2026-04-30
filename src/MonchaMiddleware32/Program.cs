@@ -1,17 +1,18 @@
 ﻿
 #region Usings
+using MonchaCommonBase;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
-using MonchaCommonBase;
+using System.Threading;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 #endregion
 
 namespace MonchaController32 {
@@ -95,53 +96,83 @@ namespace MonchaController32 {
 
         #region Network
         public void networkPacketReceived(NetworkPacket packet) {
-            if(packet is ManagementPacket) {
+            if (packet is ManagementPacket)
+            {
                 #region Management
                 ManagementPacket parcel = (ManagementPacket)packet;
-                if(parcel.OpenDll) {
-                    if(!loaded) {
-                        if(OpenDll()==0) {
+                if (parcel.OpenDll)
+                {
+                    if (!loaded)
+                    {
+                        if (OpenDll() == 0)
+                        {
                             initDevices();
-                            loaded=true;
-                        } else {
-                            if(server!=null) server.sendMessage("ERROR: Could not open DLL. Please check your paths.");
+                            loaded = true;
+                        }
+                        else
+                        {
+                            if (server != null) server.sendMessage("ERROR: Could not open DLL. Please check your paths.");
                         }
                     }
-                } else {
-                    if(loaded) {
+                }
+                else
+                {
+                    if (loaded)
+                    {
                         setBlank();
                         CloseDll();
-                        loaded=false;
-                        if(server!=null) {
-                            server.onNetworkPacketReceived-=networkPacketReceived;
+                        loaded = false;
+                        if (server != null)
+                        {
+                            server.onNetworkPacketReceived -= networkPacketReceived;
                             server.terminate();
-                            server=null;
+                            server = null;
                         }
                     }
                 }
                 #endregion
-            } else if(packet is SearchDevicesPacket) {
+            }
+            else if (packet is SearchDevicesPacket)
+            {
                 #region Search Controllers
-                if(loaded) {
+                if (loaded)
+                {
                     searchDevices();
                 }
                 #endregion
-            } else if(packet is SendBlankPointPacket) {
+            }
+            else if (packet is SendBlankPointPacket)
+            {
                 #region Send Blank Point
-                if(loaded) {
+                if (loaded)
+                {
                     //sendBlankPoint((SendBlankPointPacket)packet);
                     sendBlackPoint((SendBlankPointPacket)packet);
                 }
                 #endregion
-            } else if(packet is SendLaserPointPacket) {
+            }
+            else if (packet is SendLaserPointPacket)
+            {
                 #region Send Laser Points
-                if(loaded) {
+                if (loaded)
+                {
                     sendLaserPoints((SendLaserPointPacket)packet);
                 }
                 #endregion
-            } else {
+            }
+            else if (packet is SendCompactLaserPointPacket)
+            {
+                #region Send Laser Points
+                if (loaded)
+                {
+                    sendCompactLaserPoints((SendCompactLaserPointPacket)packet);
+                }
+                #endregion
+            }
+            else
+            {
                 #region Report Back
-                if(server!=null) server.sendMessage("ERROR: Unknown packet type received on TCP socket.");
+                if (server != null) server.sendMessage("ERROR: Unknown packet type received on TCP socket.");
                 #endregion
             }
         }
@@ -305,6 +336,71 @@ namespace MonchaController32 {
                     }
                 } catch(InvalidDeviceException) {
                     server.sendExceptionCode(parcel.DeviceAddress, 3, getErrorCode(3)+" [I:3]");
+                }
+            }
+        }
+
+        private void sendCompactLaserPoints(SendCompactLaserPointPacket parcel)
+        {
+            if (server != null)
+            {
+                try
+                {
+                    UInt32 index = findDeviceIndex(parcel.DeviceAddress);
+                    // test device for overflowing
+                    bool canSend = false;
+                    int code1 = CanSendNextFrame(index, ref canSend);
+                    if (code1 == 0)
+                    {
+                        if (canSend)
+                        {
+                            var data = parcel.Data.ToArray();
+                            var scanrate = BitConverter.ToUInt16(data.AsSpan().Slice(4));
+
+                            var ptOffset = 6;
+                            var ptLength = 8;
+                            HwLaserPoint[] hwPoints = new HwLaserPoint[(data.Count() - ptOffset) / ptLength];
+                            // transform from network point to device point
+                            for (int p = 0; p < hwPoints.Length; p++)
+                            {
+                                hwPoints[p].x = BitConverter.ToUInt16(data, ptOffset + p * ptLength);
+                                hwPoints[p].y = BitConverter.ToUInt16(data, ptOffset + p * ptLength + 2);
+
+                                byte r = data[ptOffset + p * ptLength + 4];
+                                byte g = data[ptOffset + p * ptLength + 5];
+                                byte b = data[ptOffset + p * ptLength + 6];
+                                byte a = data[ptOffset + p * ptLength + 7];
+
+                                hwPoints[p].colors = [r, g, b, a, 0, 0];
+
+                            }
+                            #region Debug Output
+                            /*for(int i = 0; i<hwPoints.Length; i++) {
+                                server.sendMessage("INFO: Sending x="+hwPoints[i].x+" y="+hwPoints[i].y+" c={"+hwPoints[i].colors[0]+", "+hwPoints[i].colors[1]+", "+hwPoints[i].colors[2]+", "+hwPoints[i].colors[3]+", "+hwPoints[i].colors[4]+", "+hwPoints[i].colors[5]+"} scanrate="+parcel.DeviceScanrate);
+                            }*/
+                            #endregion
+                            // send laser points to device
+                            int code2 = SendFrame(index, hwPoints, (UInt32)hwPoints.Length, scanrate);
+                            if (code2 != 0)
+                            {
+                                //server.sendMessage("WARNING: Sending laser points to device with index "+parcel.DeviceAddress+" failed: "+getErrorCode(code2));
+                                server.sendExceptionCode(parcel.DeviceAddress, code1, getErrorCode(code1) + " [K:" + code1 + "]");
+                            }
+                        }
+                        else
+                        {
+                            server.sendExceptionCode(parcel.DeviceAddress, 5, "OVERFLOW");
+                        }
+                    }
+                    else
+                    {
+                        //server.sendMessage("WARNING: Could not query laser device with index "+parcel.DeviceAddress+" for overflow state: "+getErrorCode(code1));
+                        server.sendExceptionCode(parcel.DeviceAddress, code1, getErrorCode(code1) + " [E:" + code1 + "]");
+                    }
+                }
+                catch (InvalidDeviceException)
+                {
+                    server.sendExceptionCode(parcel.DeviceAddress, 3, getErrorCode(3) + " [I:3]");
                 }
             }
         }

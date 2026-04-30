@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Net;
+using System.Text;
 #endregion
 
 namespace MonchaCommonBase {
@@ -208,6 +210,48 @@ namespace MonchaCommonBase {
         }
         #endregion
 
+    }
+
+    [Serializable]
+    public class SendCompactLaserPointPacket : NetworkPacket
+    {
+        #region Fields
+        private List<byte> data;
+        #endregion
+
+        #region Lifecycle
+        public SendCompactLaserPointPacket() : base()
+        {
+            data = new List<byte>();
+        }
+        #endregion
+
+        #region Properties
+        public string DeviceAddress {
+            get {
+                var ip = "";
+                for (int i = 0; i < 4; i++)
+                    ip += data[i].ToString() + ".";
+                ip = ip.TrimEnd('.');
+                return ip;
+            }
+        }
+        
+        public UInt32 DeviceScanrate
+        {
+            get
+            {
+                var scanrate = BitConverter.ToUInt16(data.ToArray().AsSpan());
+                return scanrate;
+            }
+        }
+
+        public List<byte> Data
+        {
+            set { data = value; }
+            get { return data; }
+        }
+        #endregion
     }
     #endregion
 

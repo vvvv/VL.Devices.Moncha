@@ -42,7 +42,7 @@
               <Choice Kind="TypeFlag" Name="MonchaDevices" />
             </p:TypeAnnotation>
           </Pad>
-          <Pad Id="EtjWqxsK736Mgy6SA2m1r1" Comment="Send" Bounds="338,630,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+          <Pad Id="EtjWqxsK736Mgy6SA2m1r1" Comment="Send" Bounds="338,630,35,35" ShowValueBox="true" isIOBox="true" Value="False">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
             </p:TypeAnnotation>
@@ -50,7 +50,7 @@
               <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="SGmrBoh3iPNOsUhHajl8sZ" Comment="Discovered Devices" Bounds="218,390,410,34" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SGmrBoh3iPNOsUhHajl8sZ" Comment="Discovered Devices" Bounds="218,390,410,49" ShowValueBox="true" isIOBox="true" />
           <Pad Id="PJzDPazR5DGQOMKYCYINZY" Comment="Find Devices" Bounds="194,240,35,35" ShowValueBox="true" isIOBox="true" Value="false">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
@@ -251,7 +251,7 @@
               <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
             </p:ValueBoxSettings>
           </Pad>
-          <Pad Id="HVoxp0EAg21PirAm9P0jKI" Comment="Power Scaling" Bounds="234,490,35,15" ShowValueBox="true" isIOBox="true" Value="0.3">
+          <Pad Id="HVoxp0EAg21PirAm9P0jKI" Comment="Power Scaling" Bounds="234,490,35,15" ShowValueBox="true" isIOBox="true" Value="0.78">
             <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
               <Choice Kind="TypeFlag" Name="Float32" />
             </p:TypeAnnotation>
