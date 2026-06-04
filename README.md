@@ -1,6 +1,6 @@
 # VL.Devices.Moncha
 
-Support for the [Moncha](https://www.showtacle.jp/v18/lasershowsoftware/hardware/moncha2/) laser DAC.
+Support for the [Moncha](https://www.showtacle.jp/v18/lasershowsoftware/hardware/moncha) laser DAC.
 
 For use with vvvv, the visual live-programming environment for .NET: http://vvvv.org
 
